@@ -9,6 +9,7 @@ def handle_events():
     global running
     global xdir
     global ydir
+    global composite
 
     events = get_events()
     for event in events:
@@ -18,8 +19,10 @@ def handle_events():
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_RIGHT:
                 xdir += 1
+                composite = 1
             elif event.key ==SDLK_LEFT:
                 xdir -= 1
+                composite = -1
             elif event.key == SDLK_UP:
                 ydir += 1
             elif event.key == SDLK_DOWN:
@@ -42,6 +45,7 @@ y= 150
 frame = 0
 xdir = 0
 ydir = 0
+composite = 1
 
 # fill here
 while running:
@@ -62,18 +66,20 @@ while running:
         col = frame - 4
         width = 240
         hight = 345
-
-    character.clip_draw(col * 240, row * 320, width, hight, x, y)
+    if composite == -1:
+        character.clip_composite_draw(col * 240, row * 320, width, hight, 0, 'h', x, y, 256, 323)
+    elif composite == 1:
+        character.clip_draw(col * 240, row * 320, width, hight, x, y)
     update_canvas()
     handle_events()
 
     frame = (frame + 1) % 6
 
-    if 120 <= x + xdir * 10 <= 1280-(120):
-        x += xdir * 10
+    if 120 <= x + xdir * 15 <= 1280-(120):
+        x += xdir * 15
 
-    if 100 <= y + ydir * 10 <= 1024 -(150):
-        y += ydir * 10
+    if 100 <= y + ydir * 15 <= 1024 -(150):
+        y += ydir * 15
 
     delay(0.07)
 
