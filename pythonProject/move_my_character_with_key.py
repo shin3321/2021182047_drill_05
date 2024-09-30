@@ -50,8 +50,12 @@ while running:
     update_canvas()
     handle_events()
     frame = (frame + 1) % 4
-    x += xdir * 10
-    y += ydir * 10
+    if 120 <= x + xdir * 10 <= 1280-(120):
+        x += xdir * 10
+
+    if 100 <= y + ydir * 10 <= 1024 -(150):
+        y += ydir * 10
+
     delay(0.05)
 
 close_canvas()
